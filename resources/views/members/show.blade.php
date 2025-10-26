@@ -2,481 +2,388 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Edit Ahli - {{ $member->full_name }}
+                Maklumat Ahli
             </h2>
-            <a href="{{ route('members.show', $member) }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Kembali
-            </a>
+            <div class="flex gap-2">
+                <a href="{{ route('members.edit', $member) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Edit
+                </a>
+                <a href="{{ route('members.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-
-            @if ($errors->any())
-                <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                    <p class="font-semibold mb-2">Terdapat ralat dalam borang:</p>
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+            
+            @if(session('success'))
+            <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg">
+                {{ session('success') }}
+            </div>
             @endif
 
-            <form action="{{ route('members.update', $member) }}" method="POST" class="space-y-6">
-                @csrf
-                @method('PUT')
-
-                <!-- Maklumat Keahlian -->
-                <div class="bg-white overflow-hidden shadow-lg rounded-lg">
-                    <div class="p-6 bg-emerald-50 border-b border-emerald-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Maklumat Keahlian</h3>
+            <!-- Profile Header -->
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg shadow-lg p-8 mb-6">
+                <div class="flex items-center">
+                    <div class="h-24 w-24 rounded-full bg-white flex items-center justify-center shadow-lg">
+                        <span class="text-4xl font-bold text-emerald-600">{{ substr($member->full_name, 0, 1) }}</span>
                     </div>
-                    <div class="p-6 space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Membership Number -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">No. Ahli <span
-                                        class="text-red-500">*</span></label>
-                                <input type="text" name="membership_number"
-                                    value="{{ old('membership_number', $member->membership_number) }}" required
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('membership_number')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- IC Number -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">No. Kad Pengenalan <span
-                                        class="text-red-500">*</span></label>
-                                <input type="text" name="ic_number"
-                                    value="{{ old('ic_number', $member->ic_number) }}" required maxlength="12"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('ic_number')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <div class="ml-6 text-white">
+                        <h3 class="text-3xl font-bold">{{ $member->full_name }}</h3>
+                        <p class="text-emerald-100 mt-1">{{ $member->membership_number }}</p>
+                        <div class="flex gap-3 mt-3">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 backdrop-blur-sm">
+                                {{ $member->gender == 'male' ? 'Lelaki' : 'Perempuan' }}
+                            </span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 backdrop-blur-sm">
+                                {{ $member->age }} Tahun
+                            </span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $member->is_active ? 'bg-green-500' : 'bg-red-500' }}">
+                                {{ $member->is_active ? 'Aktif' : 'Tidak Aktif' }}
+                            </span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Maklumat Peribadi -->
-                <div class="bg-white overflow-hidden shadow-lg rounded-lg">
-                    <div class="p-6 bg-emerald-50 border-b border-emerald-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Maklumat Peribadi</h3>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <!-- Full Name -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penuh <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="full_name" value="{{ old('full_name', $member->full_name) }}"
-                                required
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                            @error('full_name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Maklumat Peribadi -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Maklumat Peribadi</h3>
                         </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Date of Birth -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Tarikh Lahir <span
-                                        class="text-red-500">*</span></label>
-                                <input type="date" name="date_of_birth"
-                                    value="{{ old('date_of_birth', $member->date_of_birth->format('Y-m-d')) }}"
-                                    required
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('date_of_birth')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Gender -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Jantina <span
-                                        class="text-red-500">*</span></label>
-                                <select name="gender" required
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                    <option value="">Pilih Jantina</option>
-                                    <option value="male"
-                                        {{ old('gender', $member->gender) == 'male' ? 'selected' : '' }}>Lelaki
-                                    </option>
-                                    <option value="female"
-                                        {{ old('gender', $member->gender) == 'female' ? 'selected' : '' }}>Perempuan
-                                    </option>
-                                </select>
-                                @error('gender')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Marital Status -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Status Perkahwinan</label>
-                                <select name="marital_status"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                    <option value="">Pilih Status</option>
-                                    <option value="single"
-                                        {{ old('marital_status', $member->marital_status) == 'single' ? 'selected' : '' }}>
-                                        Bujang</option>
-                                    <option value="married"
-                                        {{ old('marital_status', $member->marital_status) == 'married' ? 'selected' : '' }}>
-                                        Berkahwin</option>
-                                    <option value="divorced"
-                                        {{ old('marital_status', $member->marital_status) == 'divorced' ? 'selected' : '' }}>
-                                        Bercerai</option>
-                                    <option value="widowed"
-                                        {{ old('marital_status', $member->marital_status) == 'widowed' ? 'selected' : '' }}>
-                                        Janda/Duda</option>
-                                </select>
-                                @error('marital_status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                        <div class="p-6">
+                            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">No. Kad Pengenalan</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 font-semibold">{{ $member->formatted_ic }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Tarikh Lahir</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $member->date_of_birth->format('d/m/Y') }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Umur</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $member->age }} tahun</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Status Perkahwinan</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">
+                                        @switch($member->marital_status)
+                                            @case('single') Bujang @break
+                                            @case('married') Berkahwin @break
+                                            @case('divorced') Bercerai @break
+                                            @case('widowed') Janda/Duda @break
+                                            @default - @break
+                                        @endswitch
+                                    </dd>
+                                </div>
+                            </dl>
                         </div>
                     </div>
-                </div>
 
-                <!-- Maklumat Hubungan -->
-                <div class="bg-white overflow-hidden shadow-lg rounded-lg">
-                    <div class="p-6 bg-emerald-50 border-b border-emerald-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Maklumat Hubungan</h3>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Phone Number -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">No. Telefon <span
-                                        class="text-red-500">*</span></label>
-                                <input type="text" name="phone_number"
-                                    value="{{ old('phone_number', $member->phone_number) }}" required
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('phone_number')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Emel</label>
-                                <input type="email" name="email" value="{{ old('email', $member->email) }}"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('email')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <!-- Maklumat Hubungan -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Maklumat Hubungan</h3>
                         </div>
-
-                        <!-- Address -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
-                            <textarea name="address" rows="2"
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">{{ old('address', $member->address) }}</textarea>
-                            @error('address')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Postcode -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Poskod</label>
-                                <input type="text" name="postcode"
-                                    value="{{ old('postcode', $member->postcode) }}" maxlength="10"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('postcode')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- City -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Bandar</label>
-                                <input type="text" name="city" value="{{ old('city', $member->city) }}"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('city')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- State -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Negeri</label>
-                                <input type="text" name="state" value="{{ old('state', $member->state) }}"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('state')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                        <div class="p-6">
+                            <dl class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">No. Telefon</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 font-semibold">
+                                        <a href="tel:{{ $member->phone_number }}" class="text-emerald-600 hover:text-emerald-800">
+                                            {{ $member->phone_number }}
+                                        </a>
+                                    </dd>
+                                </div>
+                                @if($member->email)
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Emel</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">
+                                        <a href="mailto:{{ $member->email }}" class="text-emerald-600 hover:text-emerald-800">
+                                            {{ $member->email }}
+                                        </a>
+                                    </dd>
+                                </div>
+                                @endif
+                                @if($member->full_address)
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Alamat</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $member->full_address }}</dd>
+                                </div>
+                                @endif
+                            </dl>
                         </div>
                     </div>
-                </div>
 
-                <!-- Maklumat Pekerjaan & Pendidikan -->
-                <div class="bg-white overflow-hidden shadow-lg rounded-lg">
-                    <div class="p-6 bg-emerald-50 border-b border-emerald-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Maklumat Pekerjaan & Pendidikan</h3>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Occupation -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan</label>
-                                <input type="text" name="occupation"
-                                    value="{{ old('occupation', $member->occupation) }}"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                @error('occupation')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Education Level -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Tahap Pendidikan</label>
-                                <select name="education_level"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                                    <option value="">Pilih Tahap Pendidikan</option>
-                                    <option value="no_formal"
-                                        {{ old('education_level', $member->education_level) == 'no_formal' ? 'selected' : '' }}>
-                                        Tiada Pendidikan Formal</option>
-                                    <option value="primary"
-                                        {{ old('education_level', $member->education_level) == 'primary' ? 'selected' : '' }}>
-                                        Sekolah Rendah</option>
-                                    <option value="secondary"
-                                        {{ old('education_level', $member->education_level) == 'secondary' ? 'selected' : '' }}>
-                                        Sekolah Menengah</option>
-                                    <option value="diploma"
-                                        {{ old('education_level', $member->education_level) == 'diploma' ? 'selected' : '' }}>
-                                        Diploma</option>
-                                    <option value="degree"
-                                        {{ old('education_level', $member->education_level) == 'degree' ? 'selected' : '' }}>
-                                        Ijazah Sarjana Muda</option>
-                                    <option value="master"
-                                        {{ old('education_level', $member->education_level) == 'master' ? 'selected' : '' }}>
-                                        Ijazah Sarjana</option>
-                                    <option value="phd"
-                                        {{ old('education_level', $member->education_level) == 'phd' ? 'selected' : '' }}>
-                                        Ijazah Kedoktoran (PhD)</option>
-                                </select>
-                                @error('education_level')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <!-- Maklumat Pekerjaan & Pendidikan -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Maklumat Pekerjaan & Pendidikan</h3>
+                        </div>
+                        <div class="p-6">
+                            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Pekerjaan</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">{{ $member->occupation ?? '-' }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Tahap Pendidikan</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">
+                                        @switch($member->education_level)
+                                            @case('no_formal') Tiada Pendidikan Formal @break
+                                            @case('primary') Sekolah Rendah @break
+                                            @case('secondary') Sekolah Menengah @break
+                                            @case('diploma') Diploma @break
+                                            @case('degree') Ijazah Sarjana Muda @break
+                                            @case('master') Ijazah Sarjana @break
+                                            @case('phd') Ijazah Kedoktoran (PhD) @break
+                                            @default - @break
+                                        @endswitch
+                                    </dd>
+                                </div>
+                            </dl>
                         </div>
                     </div>
-                </div>
 
-                <!-- Maklumat Keluarga -->
-                @if ($member->households->count() > 0)
+                    <!-- Maklumat Keluarga -->
+                    @if($member->households->count() > 0)
                     <div class="bg-white overflow-hidden shadow-lg rounded-lg">
                         <div class="p-6 bg-emerald-50 border-b border-emerald-100">
                             <h3 class="text-lg font-semibold text-gray-900">Maklumat Keluarga</h3>
                         </div>
                         <div class="p-6">
-                            @foreach ($member->households as $household)
-                                <div class="border border-gray-200 rounded-lg p-4 mb-4 last:mb-0">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div>
-                                            <p class="text-sm font-semibold text-gray-900">
-                                                {{ $household->household_number }}</p>
-                                            <p class="text-sm text-gray-500">
-                                                {{ $household->zone->name ?? 'Tiada Zon' }}</p>
-                                        </div>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                                            @switch($household->pivot->relationship)
-                                                @case('head')
-                                                    Ketua Keluarga
-                                                @break
-
-                                                @case('spouse')
-                                                    Pasangan
-                                                @break
-
-                                                @case('child')
-                                                    Anak
-                                                @break
-
-                                                @case('parent')
-                                                    Ibu Bapa
-                                                @break
-
-                                                @case('sibling')
-                                                    Adik Beradik
-                                                @break
-
-                                                @default
-                                                    Lain-lain
-                                                @break
-                                            @endswitch
-                                        </span>
+                            @foreach($member->households as $household)
+                            <div class="border border-gray-200 rounded-lg p-4 mb-4 last:mb-0">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $household->household_number }}</p>
+                                        <p class="text-sm text-gray-500">{{ $household->zone->name ?? 'Tiada Zon' }}</p>
                                     </div>
-                                    <div class="text-sm text-gray-600">
-                                        <p class="mb-1"><strong>Alamat:</strong> {{ $household->full_address }}</p>
-                                        <p><strong>Jumlah Ahli Keluarga:</strong> {{ $household->total_members }} orang
-                                        </p>
-                                    </div>
-
-                                    <!-- Family Members -->
-                                    @if ($household->members->count() > 1)
-                                        <div class="mt-4 pt-4 border-t border-gray-200">
-                                            <p class="text-sm font-medium text-gray-700 mb-2">Ahli Keluarga Lain:</p>
-                                            <div class="space-y-2">
-                                                @foreach ($household->members as $familyMember)
-                                                    @if ($familyMember->id !== $member->id)
-                                                        <div class="flex items-center justify-between text-sm">
-                                                            <div class="flex items-center">
-                                                                <div
-                                                                    class="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mr-2">
-                                                                    <span
-                                                                        class="text-white text-xs font-semibold">{{ substr($familyMember->full_name, 0, 1) }}</span>
-                                                                </div>
-                                                                <div>
-                                                                    <p class="font-medium text-gray-900">
-                                                                        {{ $familyMember->full_name }}</p>
-                                                                    <p class="text-xs text-gray-500">
-                                                                        @switch($familyMember->pivot->relationship)
-                                                                            @case('head')
-                                                                                Ketua Keluarga
-                                                                            @break
-
-                                                                            @case('spouse')
-                                                                                Pasangan
-                                                                            @break
-
-                                                                            @case('child')
-                                                                                Anak
-                                                                            @break
-
-                                                                            @case('parent')
-                                                                                Ibu Bapa
-                                                                            @break
-
-                                                                            @case('sibling')
-                                                                                Adik Beradik
-                                                                            @break
-
-                                                                            @default
-                                                                                Lain-lain
-                                                                            @break
-                                                                        @endswitch
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <a href="{{ route('members.show', $familyMember) }}"
-                                                                class="text-emerald-600 hover:text-emerald-800 text-xs">
-                                                                Lihat →
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                        @switch($household->pivot->relationship)
+                                            @case('head') Ketua Keluarga @break
+                                            @case('spouse') Pasangan @break
+                                            @case('child') Anak @break
+                                            @case('parent') Ibu Bapa @break
+                                            @case('sibling') Adik Beradik @break
+                                            @default Lain-lain @break
+                                        @endswitch
+                                    </span>
                                 </div>
+                                <div class="text-sm text-gray-600">
+                                    <p class="mb-1"><strong>Alamat:</strong> {{ $household->full_address }}</p>
+                                    <p><strong>Jumlah Ahli Keluarga:</strong> {{ $household->total_members }} orang</p>
+                                </div>
+                                
+                                <!-- Family Members -->
+                                @if($household->members->count() > 1)
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <p class="text-sm font-medium text-gray-700 mb-2">Ahli Keluarga Lain:</p>
+                                    <div class="space-y-2">
+                                        @foreach($household->members as $familyMember)
+                                            @if($familyMember->id !== $member->id)
+                                            <div class="flex items-center justify-between text-sm">
+                                                <div class="flex items-center">
+                                                    <div class="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mr-2">
+                                                        <span class="text-white text-xs font-semibold">{{ substr($familyMember->full_name, 0, 1) }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <p class="font-medium text-gray-900">{{ $familyMember->full_name }}</p>
+                                                        <p class="text-xs text-gray-500">
+                                                            @switch($familyMember->pivot->relationship)
+                                                                @case('head') Ketua Keluarga @break
+                                                                @case('spouse') Pasangan @break
+                                                                @case('child') Anak @break
+                                                                @case('parent') Ibu Bapa @break
+                                                                @case('sibling') Adik Beradik @break
+                                                                @default Lain-lain @break
+                                                            @endswitch
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <a href="{{ route('members.show', $familyMember) }}" class="text-emerald-600 hover:text-emerald-800 text-xs">
+                                                    Lihat →
+                                                </a>
+                                            </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
                             @endforeach
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                <!-- Relationship -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Hubungan dalam Keluarga</label>
-                    <select name="relationship"
-                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                        <option value="">Pilih Hubungan</option>
-                        <option value="head"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'head' ? 'selected' : '' }}>
-                            Ketua Keluarga</option>
-                        <option value="spouse"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'spouse' ? 'selected' : '' }}>
-                            Pasangan</option>
-                        <option value="child"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'child' ? 'selected' : '' }}>
-                            Anak</option>
-                        <option value="parent"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'parent' ? 'selected' : '' }}>
-                            Ibu Bapa</option>
-                        <option value="sibling"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'sibling' ? 'selected' : '' }}>
-                            Adik Beradik</option>
-                        <option value="other"
-                            {{ old('relationship', $currentHousehold?->pivot->relationship) == 'other' ? 'selected' : '' }}>
-                            Lain-lain</option>
-                    </select>
-                    @error('relationship')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <!-- Catatan -->
+                    @if($member->notes)
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Catatan</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-sm text-gray-700">{{ $member->notes }}</p>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
-        </div>
 
-        <!-- Is Head -->
-        <div>
-            <label class="flex items-center">
-                <input type="checkbox" name="is_head" value="1"
-                    {{ old('is_head', $currentHousehold?->pivot->is_head) ? 'checked' : '' }}
-                    class="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                <span class="ml-2 text-sm text-gray-700">Tandakan jika ahli ini adalah Ketua Keluarga</span>
-            </label>
-        </div>
-    </div>
-    </div>
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    
+                    <!-- Quick Info -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Maklumat Ringkas</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-emerald-100 rounded-md p-2">
+                                    <svg class="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-xs text-gray-500">No. Ahli</p>
+                                    <p class="text-sm font-semibold text-gray-900">{{ $member->membership_number }}</p>
+                                </div>
+                            </div>
 
-    <!-- Status & Catatan -->
-    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
-        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
-            <h3 class="text-lg font-semibold text-gray-900">Status & Catatan</h3>
-        </div>
-        <div class="p-6 space-y-4">
-            <!-- Active Status -->
-            <div>
-                <label class="flex items-center">
-                    <input type="checkbox" name="is_active" value="1"
-                        {{ old('is_active', $member->is_active) ? 'checked' : '' }}
-                        class="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                    <span class="ml-2 text-sm text-gray-700">Ahli Aktif</span>
-                </label>
-                <p class="mt-1 text-xs text-gray-500">Nyahtanda jika ahli tidak lagi aktif</p>
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-100 rounded-md p-2">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-xs text-gray-500">Tarikh Daftar</p>
+                                    <p class="text-sm font-semibold text-gray-900">{{ $member->registered_date->format('d/m/Y') }}</p>
+                                </div>
+                            </div>
+
+                            @if($member->households->first())
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-purple-100 rounded-md p-2">
+                                    <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-xs text-gray-500">Zon Kawasan</p>
+                                    <p class="text-sm font-semibold text-gray-900">{{ $member->households->first()->zone->name ?? '-' }}</p>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Tindakan</h3>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <a href="{{ route('members.edit', $member) }}" class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                Edit Maklumat
+                            </a>
+                            
+                            <button onclick="window.print()" class="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                                </svg>
+                                Cetak Profil
+                            </button>
+
+                            <form action="{{ route('members.destroy', $member) }}" method="POST" onsubmit="return confirm('Adakah anda pasti untuk memadamkan ahli ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    Padam Ahli
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                        <div class="p-6 bg-emerald-50 border-b border-emerald-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Rekod</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="flow-root">
+                                <ul class="-mb-8">
+                                    <li>
+                                        <div class="relative pb-8">
+                                            <div class="relative flex space-x-3">
+                                                <div>
+                                                    <span class="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center ring-8 ring-white">
+                                                        <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="min-w-0 flex-1 pt-1.5">
+                                                    <div>
+                                                        <p class="text-sm text-gray-500">Ahli didaftarkan</p>
+                                                        <p class="mt-0.5 text-xs text-gray-400">{{ $member->created_at->format('d/m/Y H:i') }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @if($member->updated_at != $member->created_at)
+                                    <li>
+                                        <div class="relative pb-8">
+                                            <div class="relative flex space-x-3">
+                                                <div>
+                                                    <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                                                        <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="min-w-0 flex-1 pt-1.5">
+                                                    <div>
+                                                        <p class="text-sm text-gray-500">Maklumat dikemaskini</p>
+                                                        <p class="mt-0.5 text-xs text-gray-400">{{ $member->updated_at->format('d/m/Y H:i') }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- Notes -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Tambahan</label>
-                <textarea name="notes" rows="3"
-                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
-                    placeholder="Sebarang catatan tambahan tentang ahli ini...">{{ old('notes', $member->notes) }}</textarea>
-                @error('notes')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
         </div>
-    </div>
-
-    <!-- Submit Buttons -->
-    <div class="flex justify-end gap-4">
-        <a href="{{ route('members.show', $member) }}"
-            class="inline-flex items-center px-6 py-3 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400">
-            Batal
-        </a>
-        <button type="submit"
-            class="inline-flex items-center px-6 py-3 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:border-emerald-900 focus:ring ring-emerald-300">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            Kemaskini Ahli
-        </button>
-    </div>
-
-    </form>
-
-    </div>
     </div>
 </x-app-layout>
