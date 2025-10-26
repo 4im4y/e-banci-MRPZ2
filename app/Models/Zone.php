@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Zone extends Model
 {
@@ -27,6 +28,22 @@ class Zone extends Model
     public function households(): HasMany
     {
         return $this->hasMany(Household::class);
+    }
+
+    /**
+     * Get all members through households
+     */
+    public function members()
+    {
+        return $this->hasManyThrough(
+            Member::class,
+            Household::class,
+            'zone_id',
+            'id',
+            'id',
+            'id'
+        )->join('household_members', 'members.id', '=', 'household_members.member_id')
+         ->where('household_members.household_id', '=', DB::raw('households.id'));
     }
 
     /**
