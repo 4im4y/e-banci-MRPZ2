@@ -186,7 +186,7 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Tindakan Pantas</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         
-                        <a href="#" class="flex items-center p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors duration-200">
+                        <a href="{{ route('members.create') }}" class="flex items-center p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors duration-200">
                             <div class="flex-shrink-0 bg-emerald-500 rounded-md p-3">
                                 <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -198,7 +198,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                        <a href="{{ route('members.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200">
                             <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
                                 <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
