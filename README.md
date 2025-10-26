@@ -173,7 +173,7 @@ docker-compose restart
 
 ## 👥 Team
 
-- **Developer:** [Your Name]
+- **Developer:** 4im4y (Aiman Mazlan)
 - **Organization:** Masjid Raja Perempuan Zainab 2
 
 ## 📝 License
