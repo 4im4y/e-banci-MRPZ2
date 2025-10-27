@@ -18,6 +18,7 @@ class Member extends Model
         'full_name',
         'date_of_birth',
         'gender',
+        'bangsa',
         'marital_status',
         'phone_number',
         'email',

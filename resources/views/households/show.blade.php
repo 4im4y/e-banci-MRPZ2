@@ -78,6 +78,17 @@
                                     </dd>
                                 </div>
                                 @endif
+
+                                @if($household->pemilikan_rumah)
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-500">Pemilikan Rumah</dt>
+                                    <dd class="mt-1">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $household->pemilikan_rumah == 'rumah_sendiri' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
+                                            {{ $household->pemilikan_rumah == 'rumah_sendiri' ? 'Rumah Sendiri' : 'Rumah Sewa' }}
+                                        </span>
+                                    </dd>
+                                </div>
+                                @endif
                                 @if($household->notes)
                                 <div>
                                     <dt class="text-sm font-medium text-gray-500">Catatan</dt>

@@ -133,6 +133,19 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Pemilikan Rumah -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pemilikan Rumah <span class="text-red-500">*</span></label>
+                            <select name="pemilikan_rumah" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                                <option value="">Pilih Pemilikan</option>
+                                <option value="rumah_sendiri" {{ old('pemilikan_rumah') == 'rumah_sendiri' ? 'selected' : '' }}>Rumah Sendiri</option>
+                                <option value="rumah_sewa" {{ old('pemilikan_rumah') == 'rumah_sewa' ? 'selected' : '' }}>Rumah Sewa</option>
+                            </select>
+                        </div>
+                        @error('pemilikan_rumah')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror   
                     </div>
                 </div>
 

@@ -20,6 +20,7 @@ class Household extends Model
         'state',
         'monthly_income',
         'income_range',
+        'pemilikan_rumah',
         'notes',
     ];
 

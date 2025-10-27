@@ -76,6 +76,7 @@ class HouseholdController extends Controller
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'income_range' => 'nullable|in:below_2000,2000_3999,4000_5999,6000_7999,8000_9999,above_10000',
+            'pemilikan_rumah' => 'required|in:rumah_sendiri,rumah_sewa',
             'notes' => 'nullable|string',
         ]);
 
@@ -125,6 +126,7 @@ class HouseholdController extends Controller
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'income_range' => 'nullable|in:below_2000,2000_3999,4000_5999,6000_7999,8000_9999,above_10000',
+            'pemilikan_rumah' => 'required|in:rumah_sendiri,rumah_sewa',
             'notes' => 'nullable|string',
         ]);
 

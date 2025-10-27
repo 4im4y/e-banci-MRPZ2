@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('households.index')" :active="request()->routeIs('households.*')">
-                        {{ __('Households') }}
+                        {{ __('Keluarga') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('households.index')" :active="request()->routeIs('households.*')">
-                {{ __('Households') }}
+                {{ __('Keluarga') }}
             </x-responsive-nav-link>
         </div>
 

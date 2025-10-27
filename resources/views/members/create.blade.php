@@ -96,6 +96,17 @@
                                 @enderror
                             </div>
 
+                            <!-- Bangsa -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bangsa <span class="text-red-500">*</span></label>
+                                <select name="bangsa" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                                    <option value="melayu" {{ old('bangsa', 'melayu') == 'melayu' ? 'selected' : '' }}>Melayu</option>
+                                    <option value="china" {{ old('bangsa') == 'china' ? 'selected' : '' }}>China</option>
+                                    <option value="india" {{ old('bangsa') == 'india' ? 'selected' : '' }}>India</option>
+                                    <option value="lain-lain" {{ old('bangsa') == 'lain-lain' ? 'selected' : '' }}>Lain-lain</option>
+                                </select>
+                            </div>
+
                             <!-- Marital Status -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Status Perkahwinan</label>

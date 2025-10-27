@@ -24,6 +24,7 @@ class HouseholdSeeder extends Seeder
                 'city' => 'Kota Bharu',
                 'state' => 'Kelantan',
                 'income_range' => '4000_5999',
+                'pemilikan_rumah' => 'rumah_sendiri',
                 'notes' => 'Keluarga berdaftar sejak 2020',
             ],
             [
@@ -34,6 +35,7 @@ class HouseholdSeeder extends Seeder
                 'city' => 'Kota Bharu',
                 'state' => 'Kelantan',
                 'income_range' => '6000_7999',
+                'pemilikan_rumah' => 'rumah_sendiri',
                 'notes' => null,
             ],
             [
@@ -44,6 +46,7 @@ class HouseholdSeeder extends Seeder
                 'city' => 'Kota Bharu',
                 'state' => 'Kelantan',
                 'income_range' => 'below_2000',
+                'pemilikan_rumah' => 'rumah_sewa',
                 'notes' => 'Keluarga asnaf',
             ],
             [
@@ -54,6 +57,7 @@ class HouseholdSeeder extends Seeder
                 'city' => 'Kota Bharu',
                 'state' => 'Kelantan',
                 'income_range' => 'above_10000',
+                'pemilikan_rumah' => 'rumah_sendiri',
                 'notes' => null,
             ],
             [
@@ -64,6 +68,7 @@ class HouseholdSeeder extends Seeder
                 'city' => 'Kota Bharu',
                 'state' => 'Kelantan',
                 'income_range' => '2000_3999',
+                'pemilikan_rumah' => 'rumah_sewa',
                 'notes' => null,
             ],
             [
